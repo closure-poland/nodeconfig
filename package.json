@@ -1,0 +1,26 @@
+{
+  "name": "nodeconfig",
+  "version": "0.1.0",
+  "description": "An event-based configuration provider for Node.js programs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rkaw92/nodeconfig"
+  },
+  "keywords": [
+    "config",
+    "configuration",
+    "provider",
+    "update",
+    "notify"
+  ],
+  "author": "Robert Kawecki <robert+npm@rkaw.pl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rkaw92/nodeconfig/issues"
+  },
+  "homepage": "https://github.com/rkaw92/nodeconfig"
+}
