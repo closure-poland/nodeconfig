@@ -13,6 +13,7 @@ function customize(baseEmitterConstructor){
 		var actualEmitter = new baseEmitterConstructor();
 		var currentConfig = null;
 		var configEventName = 'config';
+		var self = this;
 		
 		this.emitConfig = function emitConfig(config, emitter){
 			// Get a key=>value list of all config nodes.
@@ -26,7 +27,7 @@ function customize(baseEmitterConstructor){
 		};
 		
 		this.setConfig = function setConfig(newConfig){
-			// Update our stored config. NOTE: This is unused at the moment.
+			// Update our stored config.
 			currentConfig = newConfig;
 			// Emit the new config.
 			this.emitConfig(newConfig, actualEmitter);
@@ -41,7 +42,7 @@ function customize(baseEmitterConstructor){
 				// Pass the config to the new listener only.
 				var temporaryEmitter = new baseEmitterConstructor();
 				temporaryEmitter.on(eventName, listener);
-				emitConfig(currentConfig, temporaryEmitter);
+				self.emitConfig(currentConfig, temporaryEmitter);
 				delete temporaryEmitter;
 			}
 		});
