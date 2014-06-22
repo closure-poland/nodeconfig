@@ -1,10 +1,8 @@
 # NodeConfig #
-- - -
 NodeConfig is a library which provides the programmer with a means to inject configuration parameters into their program. It can serve as an alternative to loading and parsing config files.
 
 
 # Usage - configured application #
-- - -
 NodeConfig is an event-based configuration injector. All ConfigProvider objects are EventEmitters. This means that your application waits for a config to appear before starting its services, like so:
 
 ```js
@@ -41,11 +39,9 @@ provider.on('config.http.port', function configurePort(newPort){
 
 
 # Usage - configuration passing #
-- - -
 OK, so we've written an application which accepts configuration parameters from some "provider" object. But how do we get one to use, in the first place? By constructing one of the provided (ahem) providers, of course!
 
 ## Configuration providers ##
-- - -
 *(Note: right now, only one config provider is available. Stay tuned for more - patches are welcome!)*
 
 ### EnvironmentConfigProvider ###
