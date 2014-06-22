@@ -15,7 +15,7 @@ npm install git+https://git@github.com/closure-poland/nodeconfig.git
 NodeConfig is an event-based configuration injector. All ConfigProvider objects are EventEmitters. This means that your application waits for a config to appear before starting its services, like so:
 
 ```js
-// Assume thar "provider" is an object - more about it below.
+// Assume that "provider" is an object - more about it below.
 provider.once('config', function initializeApplication(configObject){
   server.listen(configObject.http.port);
 });
