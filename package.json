@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/rkaw92/nodeconfig"
+    "url": "git://github.com/closure-poland/nodeconfig"
   },
   "keywords": [
     "config",
@@ -20,7 +20,7 @@
   "author": "Robert Kawecki <robert+npm@rkaw.pl>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rkaw92/nodeconfig/issues"
+    "url": "https://github.com/closure-poland/nodeconfig/issues"
   },
-  "homepage": "https://github.com/rkaw92/nodeconfig"
+  "homepage": "https://github.com/closure-poland/nodeconfig"
 }
