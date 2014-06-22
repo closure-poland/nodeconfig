@@ -1,6 +1,15 @@
 # NodeConfig #
 NodeConfig is a library which provides the programmer with a means to inject configuration parameters into their program. It can serve as an alternative to loading and parsing config files.
 
+# Installing #
+```sh
+npm install nodeconfig
+```
+
+Or, to obtain the development version, directly from git:
+```sh
+npm install git+https://git@github.com/closure-poland/nodeconfig.git
+```
 
 # Usage - configured application #
 NodeConfig is an event-based configuration injector. All ConfigProvider objects are EventEmitters. This means that your application waits for a config to appear before starting its services, like so:
