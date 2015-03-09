@@ -51,7 +51,7 @@ provider.on('config.http.port', function configurePort(newPort){
 OK, so we've written an application which accepts configuration parameters from some "provider" object. But how do we get one to use, in the first place? By constructing one of the provided (ahem) providers, of course!
 
 ## Configuration providers ##
-*(Note: right now, only one config provider is available. Stay tuned for more - patches are welcome!)*
+*(Note: right now, only two config providers are available. Stay tuned for more - patches are welcome!)*
 
 ### EnvironmentConfigProvider ###
 Initialization:
@@ -64,6 +64,20 @@ Config passing:
 env 'config.http.port=number:1337' 'config.http.banner=string:Hello, world!' node YourServer.js
 ```
 *(Or you can use Node's child_process to spawn another Node instance and pass the config variables)*
+
+### JSONFileConfigProvider ###
+Initialization:
+```js
+var NodeConfig = require('nodeconfig');
+var provider = new NodeConfig.JSONFileConfigProvider('/path/to/file.json');
+```
+No further config passing is needed, of course.
+This provider emits error events in case something goes wrong, so make sure to listen for them or be prepared for uncaught exeptions!
+```js
+provider.on('error', function handleError(error) {
+	// handle error here
+});
+```
 
 
 # Development roadmap #
