@@ -25,23 +25,43 @@ module.exports.flattenNodes = function flattenNodes(configObject, leavesOnly){
 	if(typeof(configObject) !== 'object' || configObject === null){
 		return {};
 	}
-	var nodes = {};
-	function _indexNodes(prefix, node){
-		var subNode;
-		for(var subNodeName in node){
-			subNode = node[subNodeName];
-			// Check whether this is a node containing other values or a leaf:
-			if(typeof(subNode) === 'object' && subNode !== null){
-				_indexNodes(prefix + subNodeName + '.', subNode);
-				if(!leavesOnly){
-					nodes[prefix + subNodeName] = subNode;
-				}
+	
+	function ConfigNode(path, value){
+		if(!(this instanceof ConfigNode)){
+			return new ConfigNode(path, value);
+		}
+		this.path = path;
+		this.value = value;
+	}
+	
+	var nodes = [];
+	function indexNode(path, node){
+		// First, index the node under its respective path that we've used to reach it:
+		nodes.push(ConfigNode(path, node));
+		// Then, process its contents, if any:
+		if(typeof(node) === 'object' && node !== null){
+			// Devise some special handling for Arrays. Even though Object.keys() currently only returns the numerical properties in Node.js, this should not be taken for granted.
+			//  Additionally, a convenience "wrapper" is prepended and appended to surround the entire list in a "config block", as below:
+			if(Array.isArray(node)){
+				// Prepare the "before node". This is an informational node that marks the beginning of a list.
+				var beforePath = path.concat([ ':list-start' ]);
+				nodes.push(ConfigNode(beforePath, {
+					length: node.length
+				}));
+				node.forEach(function traverseConfigObjectList(subNode, index){
+					indexNode(path.concat([ index ]), subNode);
+				});
+				// Prepare the "after node", marking the end of the config object list.
+				var afterPath = path.concat([ ':list-end' ]);
 			}
 			else{
-				nodes[prefix + subNodeName] = subNode;
+				Object.keys(node).forEach(function traverseSubObjects(subNodeName){
+					indexNode(path.concat([ subNodeName ]), node[subNodeName]);
+				});
 			}
 		}
 	}
-	_indexNodes('', configObject);
+	
+	indexNode([], configObject);
 	return nodes;
 };

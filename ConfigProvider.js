@@ -1,28 +1,32 @@
 var util = require('util');
-var EventEmitter = require('events').EventEmitter;
+var EventEmitter2 = require('eventemitter2').EventEmitter2;
 var flattenNodes = require('./utils').flattenNodes;
 
 var separator = '.';
 
-function customize(baseEmitterConstructor){
+function customize(baseEmitterConstructor, delimiter){
 	if(typeof(baseEmitterConstructor.prototype.emit) !== 'function'){
 		throw new Error('The passed base emitter prototype does not have an "emit" method!');
 	}
 	
 	function ConfigProvider(){
-		var actualEmitter = new baseEmitterConstructor();
+		var actualEmitter = new baseEmitterConstructor({
+			wildcard: true,
+			delimiter: delimiter,
+			newListener: true
+		});
 		var currentConfig = null;
-		var configEventName = 'config';
+		var configEventPrefix = 'config';
 		var self = this;
 		
 		this.emitConfig = function emitConfig(config, emitter){
-			// Get a key=>value list of all config nodes.
-			var allSubNodes = flattenNodes(config);
-			// Since the main (top-level) config object is not included in the list, we need to handle it explicitly. We choose to do it first.
-			emitter.emit(configEventName, config);
-			// Also emit all sub-nodes (including tree leaves) in "namespaced" events.
-			Object.keys(allSubNodes).forEach(function emitConfigSubNode(subNodeName){
-				emitter.emit(configEventName + separator + subNodeName, allSubNodes[subNodeName]);
+			// Get a list of all config nodes, suitable for immediate delivery:
+			var configNodes = flattenNodes(config);
+			// Emit the config objects in the order received:
+			configNodes.forEach(function emitConfigNode(node){
+				// Emit an event named after the node path, prefixed by the config event name prefix:
+				var eventName = [ configEventPrefix ].concat(node.path);
+				emitter.emit(eventName, node.value, eventName.join(delimiter));
 			});
 		};
 		
@@ -43,12 +47,11 @@ function customize(baseEmitterConstructor){
 				var temporaryEmitter = new baseEmitterConstructor();
 				temporaryEmitter.on(eventName, listener);
 				self.emitConfig(currentConfig, temporaryEmitter);
-				delete temporaryEmitter;
 			}
 		});
 	}
 	return ConfigProvider;
 }
 
-module.exports = customize(EventEmitter);
+module.exports = customize(EventEmitter2, '.');
 module.exports.customize = customize;
