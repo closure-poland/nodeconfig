@@ -44,7 +44,8 @@ module.exports.flattenNodes = function flattenNodes(configObject, leavesOnly){
 			//  Additionally, a convenience "wrapper" is prepended and appended to surround the entire list in a "config block", as below:
 			if(Array.isArray(node)){
 				// Prepare the "before node". This is an informational node that marks the beginning of a list.
-				var beforePath = path.concat([ ':list-start' ]);
+				var listStartName = (path[path.length - 1] || '') + ':list-start';
+				var beforePath = path.slice(0, -1).concat([ listStartName ]);
 				nodes.push(ConfigNode(beforePath, {
 					length: node.length
 				}));
@@ -52,7 +53,8 @@ module.exports.flattenNodes = function flattenNodes(configObject, leavesOnly){
 					indexNode(path.concat([ index ]), subNode);
 				});
 				// Prepare the "after node", marking the end of the config object list.
-				var afterPath = path.concat([ ':list-end' ]);
+				var listEndName = (path[path.length - 1] || '') + ':list-end';
+				var afterPath = path.slice(0, -1).concat([ listEndName ]);
 			}
 			else{
 				Object.keys(node).forEach(function traverseSubObjects(subNodeName){
