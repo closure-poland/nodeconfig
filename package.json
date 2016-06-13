@@ -25,6 +25,7 @@
   "homepage": "https://github.com/closure-poland/nodeconfig",
   "dependencies": {
     "eventemitter2": "^0.4.14",
+    "js-yaml": "^3.6.1",
     "when": "^3.7.2"
   }
 }
