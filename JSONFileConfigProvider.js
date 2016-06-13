@@ -13,7 +13,7 @@ function customize(baseProviderConstructor) {
 				provider.setConfig(config);
 			}
 			catch(error) {
-				provider.getEmitter().emit('error', err);
+				provider.getEmitter().emit('error', error);
 			}
 		});
 		return provider.getEmitter();
