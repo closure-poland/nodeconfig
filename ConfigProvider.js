@@ -44,7 +44,11 @@ function customize(baseEmitterConstructor, delimiter){
 		actualEmitter.on('newListener', function(eventName, listener){
 			if(currentConfig){
 				// Pass the config to the new listener only.
-				var temporaryEmitter = new baseEmitterConstructor();
+				var temporaryEmitter = new baseEmitterConstructor({
+					wildcard: true,
+					delimiter: delimiter,
+					newListener: true
+				});
 				temporaryEmitter.on(eventName, listener);
 				self.emitConfig(currentConfig, temporaryEmitter);
 			}
